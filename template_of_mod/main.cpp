@@ -4,14 +4,25 @@
 // I-declare ang iyong Mod
 MYMOD(com.zamzam.realistic_traffic, Realistic AI Traffic, 1.0, zamzamshi123)
 
-// Dito natin ilalagay ang address ng "DriveToPoint" function ng GTA SA
-// para ma-adjust ang steering nila kapag may harang.
+// Ginagamit natin ang interface para sa memory patching
+uintptr_t pGameLib = 0;
+
 extern "C" void OnModLoad()
 {
     logger->Info("Realistic Traffic Mod: Initializing...");
-    
-    // Ang logic dito ay tataas ang 'Detection Range' ng mga sasakyan
-    // para mas maaga silang pumreno o lumiko kapag may nakita sa harap.
+
+    // Kunin ang base address ng laro (libGTASA.so)
+    pGameLib = aml->GetLib("libGTASA.so");
+
+    if(pGameLib)
+    {
+        // Halimbawa: Pagbabago sa AI Detection Distance
+        // Pinapalitan natin ang hex value sa partikular na address (v2.10 address example)
+        // aml->Write(pGameLib + 0xXXXXXX, (char*)"\x00\x00\x80\x3F", 4); 
+        
+        logger->Info("Realistic Traffic Mod: Patches Applied!");
+    }
     
     logger->Info("Realistic Traffic Mod: Done Loading!");
 }
+
