@@ -1,8 +1,9 @@
 #include <mod/amlmod.h>
 #include <mod/logger.h>
 
-// FIX: Tatlo (3) lang dapat ang parameters: ID, Name, at Version.
-MYMOD(com.zamzam.realistic_traffic, "Real Traffic Fix", "1.1")
+// FIX: Apat na parameters na lahat ay may quotation marks. 
+// Format: (GUID, Name, Version, Author)
+MYMOD("com.zamzam.realistic_traffic", "Real Traffic Fix", "1.1", "zamzamshi123")
 
 // Base address ng laro
 uintptr_t pGameLib = 0;
