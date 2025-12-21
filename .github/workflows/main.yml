@@ -1,24 +1,22 @@
 #include <mod/amlmod.h>
 #include <mod/logger.h>
 
-// Format: (GUID/ID, Name, Version, Author)
-// Sinubukan nating alisin ang quotes sa unang parameter (GUID)
-￼zamzamsj
-// Base address ng laro
+// PINAKAAAYOS NA FORMAT: Simple ID (no dots), Name, Version, Author
+MYMOD(RealTrafficFixMod, "Real Traffic Fix", "1.1", "zamzamshi123")
+
 uintptr_t pGameLib = 0;
 
 extern "C" void OnModLoad()
 {
-    // Gamitin ang logger interface
     logger->SetTag("RealTrafficFix");
     logger->Info("Initializing mod remake...");
 
-    // Hanapin ang GTA library base sa in-upload mong files
+    // Pag-load ng library base sa file mo
     pGameLib = aml->GetLib("libGTASA.so");
     
     if(pGameLib)
     {
-        // Logic base sa symbols ng libRealTrafficFix.so
+        // Mga symbols na nakuha sa libRealTrafficFix.so
         logger->Info("Realistic Traffic: CruiseMaxSpeed logic applied.");
         logger->Info("Realistic Traffic: ProcessLineOfSight enabled.");
         logger->Info("Realistic Traffic: DoFixGroundStuck active.");
@@ -28,7 +26,7 @@ extern "C" void OnModLoad()
     }
     else
     {
-        logger->Error("libGTASA.so not found! Mod failed to initialize.");
+        logger->Error("libGTASA.so not found!");
     }
 }
 
