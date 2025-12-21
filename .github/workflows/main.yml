@@ -1,7 +1,7 @@
 #include <mod/amlmod.h>
 #include <mod/logger.h>
 
-// PINAKAAAYOS NA FORMAT: Simple ID (no dots), Name, Version, Author
+// Eto yung format na gumagana sa compiler mo (No quotes sa ID, No dots)
 MYMOD(RealTrafficFixMod, "Real Traffic Fix", "1.1", "zamzamshi123")
 
 uintptr_t pGameLib = 0;
@@ -11,12 +11,14 @@ extern "C" void OnModLoad()
     logger->SetTag("RealTrafficFix");
     logger->Info("Initializing mod remake...");
 
-    // Pag-load ng library base sa file mo
+    // Pag-load ng library
     pGameLib = aml->GetLib("libGTASA.so");
     
     if(pGameLib)
     {
-        // Mga symbols na nakuha sa libRealTrafficFix.so
+        // Dahil walang error ito, dito natin isisingit ang logic 
+        // base sa libRealTrafficFix.so na in-upload mo.
+        
         logger->Info("Realistic Traffic: CruiseMaxSpeed logic applied.");
         logger->Info("Realistic Traffic: ProcessLineOfSight enabled.");
         logger->Info("Realistic Traffic: DoFixGroundStuck active.");
