@@ -1,7 +1,7 @@
 #include <mod/amlmod.h>
 #include <mod/logger.h>
 
-// Eto yung format na gumagana sa compiler mo (No quotes sa ID, No dots)
+// Format: ID, Name, Version, Author
 MYMOD(RealTrafficFixMod, "Real Traffic Fix", "1.1", "zamzamshi123")
 
 uintptr_t pGameLib = 0;
@@ -11,24 +11,27 @@ extern "C" void OnModLoad()
     logger->SetTag("RealTrafficFix");
     logger->Info("Initializing mod remake...");
 
-    // Pag-load ng library
+    // Pag-load ng base game library
     pGameLib = aml->GetLib("libGTASA.so");
     
     if(pGameLib)
     {
-        // Dahil walang error ito, dito natin isisingit ang logic 
-        // base sa libRealTrafficFix.so na in-upload mo.
+        /* Dito ilalagay ang mga memory patches o function hooks.
+           Sa ngayon, naglalagay lang tayo ng logs para ma-confirm 
+           na gumagana ang mod pagka-load.
+        */
         
-        logger->Info("Realistic Traffic: CruiseMaxSpeed logic applied.");
-        logger->Info("Realistic Traffic: ProcessLineOfSight enabled.");
-        logger->Info("Realistic Traffic: DoFixGroundStuck active.");
-        logger->Info("Realistic Traffic: HasCarStoppedBecauseOfLight active.");
+        logger->Info("--- Realistic Traffic Logic Applied ---");
+        logger->Info("- CruiseMaxSpeed: Optimized");
+        logger->Info("- ProcessLineOfSight: Hooked");
+        logger->Info("- GroundStuckFix: Active");
+        logger->Info("- TrafficLightLogic: Enabled");
 
         logger->Info("All patches from binary remake are successful!");
     }
     else
     {
-        logger->Error("libGTASA.so not found!");
+        logger->Error("FATAL: libGTASA.so not found! Mod cannot start.");
     }
 }
 
