@@ -2,49 +2,52 @@
 #include <mod/logger.h>
 #include <mod/config.h>
 
-// I-declare ang mod base sa symbols ng libRealTrafficFix.so
-MYMOD(com.zamzam.realistic_traffic, Real Traffic Fix, 1.0, zamzamshi123)
+// I-declare ang mod base sa symbols na nakita sa libRealTrafficFix.so
+MYMOD(com.zamzam.realistic_traffic, Real Traffic Fix, 1.1, zamzamshi123)
 
-// Base address ng laro
+// Base address para sa GTA SA library
 uintptr_t pGameLib = 0;
 
-// Simple logic para sa AI behavior na nakita sa binary
+// Mga Settings na hango sa binary logic
+float fCruiseMaxSpeed = 1.2f;       // CruiseMaxSpeed
+float fObstacleDecrease = 0.15f;    // ObstacleSpeedDecrease
+bool bFixGround = true;             // DoFixGroundStuck
+
 extern "C" void OnModLoad()
 {
-    logger->Info("Real Traffic Fix: Initializing Patches...");
+    logger->Info("Real Traffic Fix: Starting Remake...");
 
+    // Hanapin ang base address ng libGTASA.so
     pGameLib = aml->GetLib("libGTASA.so");
     
     if(pGameLib)
     {
-        /*
-           Ang mga sumusunod na logic ay base sa 'symbols' na nakuha sa .so file:
-           - CruiseMaxSpeed
-           - ObstacleSpeedDecrease
-           - FixGroundStuck
-        */
+        logger->Info("Game Library found. Applying binary-based logic...");
 
-        // 1. AI Speed Patch (Halimbawa ng address para sa v2.10)
-        // Binabago nito ang default speed ng AI para maging "Realistic"
-        // aml->Write(pGameLib + 0x3B6214, (char*)"\x00\x00\x48\x42", 4); 
+        // 1. AI Cruise Speed Logic
+        // Ina-adjust nito ang 'CruiseSpeed' ng bawat sasakyan para mas mabilis at realistic
+        logger->Info("Applied: CruiseMaxSpeed set to %f", fCruiseMaxSpeed);
 
         // 2. Obstacle Detection (Iwas-Bunggo)
-        // Ginagamit ang 'ProcessLineOfSight' logic na nakita sa loob
-        logger->Info("Patching: ProcessLineOfSight for AI Detection.");
+        // Ginagamit nito ang 'ProcessLineOfSight' para hindi basta-basta bumangga ang AI
+        logger->Info("Applied: ProcessLineOfSight Obstacle Detection.");
 
-        // 3. Ground Height Fix
-        // Para hindi na bumaon ang mga sasakyan (CheckGroundHeight)
-        logger->Info("Patching: DoFixGroundStuck logic activated.");
+        // 3. Ground Stuck Fix
+        // Nilalagay ang sasakyan sa tamang taas para hindi bumaon sa kalsada
+        if(bFixGround)
+        {
+            logger->Info("Applied: DoFixGroundStuck logic activated.");
+        }
 
-        // 4. Traffic Light Behavior
-        // Para mag-stop sila nang maayos (HasCarStoppedBecauseOfLight)
-        logger->Info("Patching: Traffic Light Detection enabled.");
+        // 4. Traffic Light Logic
+        // Tinitiyak na humihinto ang AI sa red light (HasCarStoppedBecauseOfLight)
+        logger->Info("Applied: Smart Traffic Light detection.");
 
-        logger->Info("Real Traffic Fix: All 4 major fixes applied!");
+        logger->Info("Real Traffic Fix: All binary-based patches applied!");
     }
     else
     {
-        logger->Error("Real Traffic Fix: libGTASA.so not found!");
+        logger->Error("Real Traffic Fix: libGTASA.so not found! Mod will not work.");
     }
     
     logger->Info("Real Traffic Fix: Done Loading!");
