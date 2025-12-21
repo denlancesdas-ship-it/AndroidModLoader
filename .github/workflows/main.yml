@@ -1,9 +1,9 @@
 #include <mod/amlmod.h>
 #include <mod/logger.h>
 
-// FIX: Apat na parameters na lahat ay may quotation marks. 
-// Format: (GUID, Name, Version, Author)
-MYMOD("com.zamzam.realistic_traffic", "Real Traffic Fix", "1.1", "zamzamshi123")
+// Format: (GUID/ID, Name, Version, Author)
+// Sinubukan nating alisin ang quotes sa unang parameter (GUID)
+MYMOD(com.zamzam.realistic_traffic, "Real Traffic Fix", "1.1", "zamzamshi123")
 
 // Base address ng laro
 uintptr_t pGameLib = 0;
@@ -32,3 +32,4 @@ extern "C" void OnModLoad()
         logger->Error("libGTASA.so not found! Mod failed to initialize.");
     }
 }
+
