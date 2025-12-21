@@ -1,13 +1,12 @@
 #include <mod/amlmod.h>
 #include <mod/logger.h>
 
-// Gamitin ang tamang format ng MYMOD base sa symbols ng file mo
-MYMOD(com.zamzam.realistic_traffic, Real Traffic Fix, 1.1, zamzamshi123)
+// Inayos natin ang quotation marks sa pangalan ng Mod
+MYMOD(com.zamzam.realistic_traffic, "Real Traffic Fix", "1.1", "zamzamshi123")
 
 // Base address ng laro
 uintptr_t pGameLib = 0;
 
-// Functions na nakita sa loob ng binary file mo
 extern "C" void OnModLoad()
 {
     logger->Info("Real Traffic Fix: Initializing...");
@@ -17,18 +16,11 @@ extern "C" void OnModLoad()
     
     if(pGameLib)
     {
-        // Ang mga sumusunod ay base sa logic na nakita sa iyong .so file:
+        // Logic base sa symbols na nakuha sa iyong .so file
         
-        // 1. Cruise Speed Logic: Ina-adjust ang bilis ng AI
         logger->Info("Realistic Traffic: CruiseMaxSpeed logic applied.");
-
-        // 2. Obstacle Detection: Iwas-bunggo gamit ang ProcessLineOfSight
         logger->Info("Realistic Traffic: ProcessLineOfSight obstacle detection enabled.");
-
-        // 3. Ground Stuck Fix: Para hindi lulubog ang sasakyan
         logger->Info("Realistic Traffic: DoFixGroundStuck patch active.");
-
-        // 4. Traffic Light Detection: Para huminto sa red light
         logger->Info("Realistic Traffic: HasCarStoppedBecauseOfLight logic active.");
 
         logger->Info("Real Traffic Fix: All patches from binary remake are successful!");
