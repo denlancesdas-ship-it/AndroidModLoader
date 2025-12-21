@@ -1,8 +1,8 @@
 #include <mod/amlmod.h>
 #include <mod/logger.h>
 
-// FIX: Lahat ng parameters sa MYMOD ay dapat may quotation marks para hindi mag-error.
-MYMOD("com.zamzam.realistic_traffic", "Real Traffic Fix", "1.1", "zamzamshi123")
+// FIX: Tatlo (3) lang dapat ang parameters: ID, Name, at Version.
+MYMOD(com.zamzam.realistic_traffic, "Real Traffic Fix", "1.1")
 
 // Base address ng laro
 uintptr_t pGameLib = 0;
@@ -18,7 +18,7 @@ extern "C" void OnModLoad()
     
     if(pGameLib)
     {
-        // Ang mga ito ay hango sa symbols na nakita sa libRealTrafficFix.so
+        // Logic base sa symbols ng libRealTrafficFix.so
         logger->Info("Realistic Traffic: CruiseMaxSpeed logic applied.");
         logger->Info("Realistic Traffic: ProcessLineOfSight enabled.");
         logger->Info("Realistic Traffic: DoFixGroundStuck active.");
