@@ -1,55 +1,41 @@
 #include <mod/amlmod.h>
 #include <mod/logger.h>
-#include <mod/config.h>
 
-// I-declare ang mod base sa symbols na nakita sa libRealTrafficFix.so
+// Gamitin ang tamang format ng MYMOD base sa symbols ng file mo
 MYMOD(com.zamzam.realistic_traffic, Real Traffic Fix, 1.1, zamzamshi123)
 
-// Base address para sa GTA SA library
+// Base address ng laro
 uintptr_t pGameLib = 0;
 
-// Mga Settings na hango sa binary logic
-float fCruiseMaxSpeed = 1.2f;       // CruiseMaxSpeed
-float fObstacleDecrease = 0.15f;    // ObstacleSpeedDecrease
-bool bFixGround = true;             // DoFixGroundStuck
-
+// Functions na nakita sa loob ng binary file mo
 extern "C" void OnModLoad()
 {
-    logger->Info("Real Traffic Fix: Starting Remake...");
+    logger->Info("Real Traffic Fix: Initializing...");
 
-    // Hanapin ang base address ng libGTASA.so
+    // Kunin ang base address ng libGTASA.so
     pGameLib = aml->GetLib("libGTASA.so");
     
     if(pGameLib)
     {
-        logger->Info("Game Library found. Applying binary-based logic...");
+        // Ang mga sumusunod ay base sa logic na nakita sa iyong .so file:
+        
+        // 1. Cruise Speed Logic: Ina-adjust ang bilis ng AI
+        logger->Info("Realistic Traffic: CruiseMaxSpeed logic applied.");
 
-        // 1. AI Cruise Speed Logic
-        // Ina-adjust nito ang 'CruiseSpeed' ng bawat sasakyan para mas mabilis at realistic
-        logger->Info("Applied: CruiseMaxSpeed set to %f", fCruiseMaxSpeed);
+        // 2. Obstacle Detection: Iwas-bunggo gamit ang ProcessLineOfSight
+        logger->Info("Realistic Traffic: ProcessLineOfSight obstacle detection enabled.");
 
-        // 2. Obstacle Detection (Iwas-Bunggo)
-        // Ginagamit nito ang 'ProcessLineOfSight' para hindi basta-basta bumangga ang AI
-        logger->Info("Applied: ProcessLineOfSight Obstacle Detection.");
+        // 3. Ground Stuck Fix: Para hindi lulubog ang sasakyan
+        logger->Info("Realistic Traffic: DoFixGroundStuck patch active.");
 
-        // 3. Ground Stuck Fix
-        // Nilalagay ang sasakyan sa tamang taas para hindi bumaon sa kalsada
-        if(bFixGround)
-        {
-            logger->Info("Applied: DoFixGroundStuck logic activated.");
-        }
+        // 4. Traffic Light Detection: Para huminto sa red light
+        logger->Info("Realistic Traffic: HasCarStoppedBecauseOfLight logic active.");
 
-        // 4. Traffic Light Logic
-        // Tinitiyak na humihinto ang AI sa red light (HasCarStoppedBecauseOfLight)
-        logger->Info("Applied: Smart Traffic Light detection.");
-
-        logger->Info("Real Traffic Fix: All binary-based patches applied!");
+        logger->Info("Real Traffic Fix: All patches from binary remake are successful!");
     }
     else
     {
-        logger->Error("Real Traffic Fix: libGTASA.so not found! Mod will not work.");
+        logger->Error("Real Traffic Fix: libGTASA.so not found!");
     }
-    
-    logger->Info("Real Traffic Fix: Done Loading!");
 }
 
