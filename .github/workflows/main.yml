@@ -1,38 +1,31 @@
 #include <mod/amlmod.h>
+#include <mod/logger.h>
 #include <mod/config.h>
-#include <stdlib.h> // Added for safety
-#include <string.h> // Added for safety
 
-// 1. Declare Variables
-int iNumSubsteps;
+// 1. SETUP NG MOD INFO
+MYMOD(com.madleg.ragdoll, RagdollPhysics, 1.0, Madleg_JuniorDjjr)
+
+// 2. GLOBAL VARIABLES
+Config* cfg = NULL;
+
+int iNumSubsteps, iNumIPLInstances;
 float fSimulationSpeed, fRagdollLinearDamping, fRagdollAngularDamping;
 float fRagdollGravity, fBulletPower, fExplosionPower;
 float fSurfaceFriction, fRagDollFriction, fRagDollRestitution;
 float fRagDollJointDamping, fRagDollGetUpThreshold;
-bool bVehicleShapeUseSpheres, bUseDynamicObjects;
 float fRagDollShapeMargin, fWorldShapeMargin, fDynamicObjectMass;
 float fWorldMinX, fWorldMinY, fWorldMaxX, fWorldMaxY;
-int iNumIPLInstances;
+bool bVehicleShapeUseSpheres, bUseDynamicObjects;
 
-// Plugin Info - Nilagyan ko ng quotes yung Author para iwas error
-MYMOD(com.user.ragdollport, RagdollPort, 1.0, "Madleg & Junior_Djjr")
+// 3. MAIN FUNCTION
+extern "C" void OnModLoad() {
+    logger->SetTag("RagdollPhysics");
+    logger->Info("Ragdoll Mod Loading...");
 
-// Pointer para sa config
-Config* cfg = NULL;
-
-// 2. Ang Function para basahin ang file
-void LoadConfig() {
-    // FIX:'new Config' GetConfig()
-    // Ito ay gagawa/babasa ng "RagDoll_physics.ini" sa config folder
+    // PAGBASA NG INI
     cfg = new Config("RagDoll_physics");
-
-    // --- Binabasa na natin ang [CONFIG] section ---
-    
-    // Integers
     iNumSubsteps = cfg->GetInt("CONFIG", "iNumSubsteps", 5);
     iNumIPLInstances = cfg->GetInt("CONFIG", "iNumIPLInstances", 100000);
-
-    // Floats
     fSimulationSpeed = cfg->GetFloat("CONFIG", "fSimulationSpeed", 1.0f);
     fRagdollLinearDamping = cfg->GetFloat("CONFIG", "fRagdollLinearDamping", 0.05f);
     fRagdollAngularDamping = cfg->GetFloat("CONFIG", "fRagdollAngularDamping", 0.8f);
@@ -47,26 +40,30 @@ void LoadConfig() {
     fRagDollShapeMargin = cfg->GetFloat("CONFIG", "fRagDollShapeMargin", 0.02f);
     fWorldShapeMargin = cfg->GetFloat("CONFIG", "fWorldShapeMargin", 0.01f);
     fDynamicObjectMass = cfg->GetFloat("CONFIG", "fDynamicObjectMass", 20000.0f);
-    
-    // World Coordinates
     fWorldMinX = cfg->GetFloat("CONFIG", "fWorldMinX", -4000.0f);
     fWorldMinY = cfg->GetFloat("CONFIG", "fWorldMinY", -4000.0f);
     fWorldMaxX = cfg->GetFloat("CONFIG", "fWorldMaxX", 4000.0f);
     fWorldMaxY = cfg->GetFloat("CONFIG", "fWorldMaxY", 4000.0f);
-
-    // Booleans
     bVehicleShapeUseSpheres = cfg->GetBool("CONFIG", "bVehicleShapeUseSpheres", true);
     bUseDynamicObjects = cfg->GetBool("CONFIG", "bUseDynamicObjects", true);
-    
-    // Save para sigurado na ma-write ang defaults kung wala pa yung file
     cfg->Save();
-}
 
-extern "C" void OnModLoad() {
-    // Tinatawag ang config loader
-    LoadConfig();
-    
-    // NOTE: Dito mo idudugtong ang code para sa Physics Logic
-    // Example: Hooking functions using AML hooks
+    // PAGBASA NG BIN
+    char path[256];
+    sprintf(path, "%s/RagDoll_physics.bin", aml->GetConfigPath()); 
+    FILE* file = fopen(path, "rb");
+    if (file) {
+        fseek(file, 0, SEEK_END);
+        long fileSize = ftell(file);
+        fseek(file, 0, SEEK_SET);
+        void* buffer = malloc(fileSize);
+        if (buffer) {
+            fread(buffer, fileSize, 1, file);
+            logger->Info("RagDoll_physics.bin loaded!");
+            free(buffer); 
+        }
+        fclose(file);
+    }
+    logger->Info("Ragdoll Mod initialization finished!");
 }
 
