@@ -22,7 +22,7 @@ Config* cfg = NULL;
 
 // 2. Ang Function para basahin ang file
 void LoadConfig() {
-    // FIX: Gumamit tayo ng 'new Config' imbis na GetConfig()
+    // FIX:'new Config' GetConfig()
     // Ito ay gagawa/babasa ng "RagDoll_physics.ini" sa config folder
     cfg = new Config("RagDoll_physics");
 
